@@ -16,28 +16,33 @@
 #
 #=============================================================================
 
-require 'Geonames'
+require 'geonames'
 
+# get list of places near by longitude/longitude location
 places_nearby = Geonames::WebService.find_nearby_place_name 43.900120387, -78.882869834
 p places_nearby
 
-#timezone = Geonames::WebService.timezone 43.900120387, -78.882869834
-#p timezone
+# get timezone for longitude/longitude location
+timezone = Geonames::WebService.timezone 43.900120387, -78.882869834
+p timezone
 
-#country_code = Geonames::WebService.country_code 43.900120387, -78.882869834
-#p country_code
+# get country code for longitude/longitude location
+country_code = Geonames::WebService.country_code 43.900120387, -78.882869834
+p country_code
 
-#country_subdivision = Geonames::WebService.country_subdivision 43.900120387, -78.882869834
-#p country_subdivision
+# get country sub-division info for longitude/longitude location
+country_subdivision = Geonames::WebService.country_subdivision 43.900120387, -78.882869834
+p country_subdivision
 
-#postal_code_sc = Geonames::PostalCodeSearchCriteria.new
-#postal_code_sc.place_name = "Oshawa"
-#postal_codes = Geonames::WebService.postal_code_search postal_code_sc
-#p postal_codes
+# get postal codes for a given location
+postal_code_sc = Geonames::PostalCodeSearchCriteria.new
+postal_code_sc.place_name = "Oshawa"
+postal_codes = Geonames::WebService.postal_code_search postal_code_sc
+p postal_codes
 
-
-#postal_code_sc = Geonames::PostalCodeSearchCriteria.new
-#postal_code_sc.place_name = "Oshawa"
-#postal_codes_nearby = Geonames::WebService.find_nearby_postal_codes postal_code_sc
-#p postal_codes_nearby.size
+# get nearby postal codes for a place name
+postal_code_sc = Geonames::PostalCodeSearchCriteria.new
+postal_code_sc.place_name = "Oshawa"
+postal_codes_nearby = Geonames::WebService.find_nearby_postal_codes postal_code_sc
+p postal_codes_nearby
 
