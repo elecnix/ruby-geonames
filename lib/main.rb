@@ -19,12 +19,17 @@
 require 'geonames'
 require 'pp'
 
+# get the nearest intersection
+intersection = Geonames::WebService.find_nearest_intersection 40.7574053333333, -73.9734773333333
+puts intersection.street_1 #=> Park Ave
+puts intersection.street_2 #=> E 51st St
+
 # get wikipedia articles by lat / long
-articles_nearby = Geonames::WebService.findNearbyWikipedia :lat => 43.900120387, :long => -78.882869834
+articles_nearby = Geonames::WebService.find_nearby_wikipedia :lat => 43.900120387, :long => -78.882869834
 p articles_nearby
 
 # get wikipedia articles by bounding box
-articles_nearby = Geonames::WebService.findBoundingBoxWikipedia :north => 43.900120387, :east => -78.882869834, :south => 43.82, :west => 79.0
+articles_nearby = Geonames::WebService.find_bounding_box_wikipedia :north => 43.900120387, :east => -78.882869834, :south => 43.82, :west => 79.0
 p articles_nearby
 
 # get list of places near by longitude/longitude location

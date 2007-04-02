@@ -16,7 +16,6 @@
 #
 #=============================================================================
 
-
 module Geonames
   class WebService
     def WebService.get_element_child_text( element, child )
@@ -69,11 +68,11 @@ module Geonames
       article.longitude             = WebService::get_element_child_float( element, 'lng' )
       article.thumbnail_img         = WebService::get_element_child_text( element, 'thumbnailImg' )
       article.distance              = WebService::get_element_child_float( element, 'distance' )
-      
+
       return article
 
     end
-    
+
     def WebService.element_to_toponym ( element )
       toponym = Toponym.new
 
@@ -93,6 +92,27 @@ module Geonames
       toponym.distance            = WebService::get_element_child_float( element, 'distance' )
 
       return toponym
+
+    end
+
+    def WebService.element_to_intersection ( element )
+      intersection = Intersection.new
+
+      intersection.street_1        = WebService::get_element_child_text( element, 'street1' )
+      intersection.street_2        = WebService::get_element_child_text( element, 'street2' )
+      intersection.admin_code_1    = WebService::get_element_child_text( element, 'adminCode1' )
+      intersection.admin_code_1    = WebService::get_element_child_text( element, 'adminCode1' )
+      intersection.admin_code_2    = WebService::get_element_child_text( element, 'adminCode2' )
+      intersection.admin_name_1    = WebService::get_element_child_text( element, 'adminName1' )
+      intersection.admin_name_2    = WebService::get_element_child_text( element, 'adminName2' )
+      intersection.country_code    = WebService::get_element_child_text( element, 'countryCode' )
+      intersection.distance        = WebService::get_element_child_float( element, 'distance' )
+      intersection.longitude       = WebService::get_element_child_float( element, 'lat' )
+      intersection.latitude        = WebService::get_element_child_float( element, 'lng' )
+      intersection.place_name      = WebService::get_element_child_text( element, 'name' )
+      intersection.postal_code     = WebService::get_element_child_text( element, 'postalcode' )
+
+      return intersection
 
     end
 
@@ -183,6 +203,34 @@ module Geonames
 
     end
 
+    def WebService.find_nearest_intersection( lat, long )
+
+      url = Geonames::GEONAMES_SERVER + "/findNearestIntersection?a=a"
+
+      url = url + "&lat=" + lat.to_s
+      url = url + "&lng=" + long.to_s
+
+      uri = URI.parse(url)
+
+      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
+
+      res = Net::HTTP.start( uri.host, uri.port ) { |http|
+        http.request( req )
+      }
+
+      doc = REXML::Document.new res.body
+
+      intersection = []
+      doc.elements.each("geonames/intersection") do |element|
+
+        intersection = WebService::element_to_intersection( element )
+
+      end
+
+      return intersection
+
+    end
+
     def WebService.timezone( lat, long )
       timezone = Timezone.new
 
@@ -212,8 +260,13 @@ module Geonames
     end
 
     def WebService.findNearbyWikipedia( hashes )
+      # here for backwards compatibility
+      WebService.find_nearby_wikipedia( hashes )
+    end
+    
+    def WebService.find_nearby_wikipedia( hashes )
       articles = Array.new
-      
+
       lat = hashes[:lat]
       long = hashes[:long]
       lang = hashes[:lang]
@@ -254,10 +307,15 @@ module Geonames
       return articles
 
     end
-    
+
     def WebService.findBoundingBoxWikipedia( hashes )
+      # here for backwards compatibility
+      WebService.find_bounding_box_wikipedia( hashes )
+    end
+    
+    def WebService.find_bounding_box_wikipedia( hashes )
       articles = Array.new
-      
+
       north = hashes[:north]
       east = hashes[:east]
       south = hashes[:south]
@@ -294,7 +352,7 @@ module Geonames
 
       return articles
 
-    end    
+    end
 
     def WebService.country_subdivision ( lat, long )
       country_subdivision = CountrySubdivision.new
@@ -426,9 +484,9 @@ module Geonames
 
       return toponym_sr
     end
-
-
+    
   end
 end
 
-
+#alias WebService.find_nearby_wikipedia findNearbyWikipedia
+#alias find_bounding_box_wikipedia findBoundingBoxWikipedia

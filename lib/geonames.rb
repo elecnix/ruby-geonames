@@ -29,6 +29,7 @@ require 'postal_code_search_criteria'
 require 'timezone'
 require 'country_subdivision'
 require 'wikipedia_article'
+require 'intersection'
 
 module Geonames
   
