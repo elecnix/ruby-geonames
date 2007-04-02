@@ -28,6 +28,7 @@ require 'postal_code'
 require 'postal_code_search_criteria'
 require 'timezone'
 require 'country_subdivision'
+require 'wikipedia_article'
 
 module Geonames
   
