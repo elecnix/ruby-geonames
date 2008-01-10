@@ -3,7 +3,7 @@ require 'date'
 
 SPEC = Gem::Specification.new do |s| 
   s.name = "geonames" 
-  s.version = "0.2.1" 
+  s.version = "0.2.2" 
   s.author = "Adam Wisniewski" 
   s.email = "adamw@tbcn.ca" 
   s.date = s.date = Date.today.to_s

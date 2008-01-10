@@ -27,10 +27,11 @@ module Geonames
         attr :style
         attr :max_rows
         attr :is_or_operator
+        attr :radius
         
         attr_writer :postal_code, :place_name, :country_code
         attr_writer :latitude, :longitude, :style
-        attr_writer :max_rows,  :is_or_operator
+        attr_writer :max_rows,  :is_or_operator, :radius
         
         def initialize
           @is_or_operator = false
@@ -65,6 +66,10 @@ module Geonames
             
             if !@max_rows.nil? 
               url = url + "&maxRows=" + CGI::escape( @max_rows )
+            end
+
+            if !@radius.nil? 
+              url = url + "&radius=" + CGI::escape( @radius.to_s )
             end
             
             if @is_or_operator 
