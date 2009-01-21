@@ -232,7 +232,13 @@ module Geonames
 
     end
 
-    def WebService.timezone( lat, long )
+    def WebService.timezone( lat, long, *args )
+      options = {
+        :open_timeout => 60,
+        :read_timeout => 60
+      }
+      options.update(args.extract_options!)
+    
       timezone = Timezone.new
 
       url = Geonames::GEONAMES_SERVER + "/timezone?a=a"
@@ -245,6 +251,8 @@ module Geonames
       req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
 
       res = Net::HTTP.start( uri.host, uri.port ) { |http|
+        http.read_timeout = options[:read_timeout]
+        http.open_timeout = options[:open_timeout]
         http.request( req )
       }
 
