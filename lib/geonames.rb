@@ -36,5 +36,24 @@ module Geonames
   GEONAMES_SERVER = "http://ws.geonames.org"
   USER_AGENT = "geonames ruby webservice client 0.1"
   
+  @@username = nil
+  @@base_url = "http://ws.geonames.org"
+
+  def self.username
+    @@username
+  end
+
+  def self.username=(username)
+    @@username = username
+  end
+
+  def self.base_url
+    @@base_url
+  end
+
+  def self.base_url=(base_url)
+    @@base_url = base_url
+  end
+
 end
 

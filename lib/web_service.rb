@@ -233,39 +233,32 @@ module Geonames
     end
 
     def WebService.timezone( lat, long, *args )
-      options = {
-        :open_timeout => 60,
-        :read_timeout => 60
-      }
-      options.update(args.extract_options!)
-    
-      timezone = Timezone.new
-
-      url = Geonames::GEONAMES_SERVER + "/timezone?a=a"
-
-      url = url + "&lat=" + lat.to_s
-      url = url + "&lng=" + long.to_s
-
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.read_timeout = options[:read_timeout]
-        http.open_timeout = options[:open_timeout]
-        http.request( req )
-      }
-
+      res = make_request("/timezone?lat=#{lat.to_s}&lng=#{long.to_s}", args)
       doc = REXML::Document.new res.body
-
+      timezone = Timezone.new
       doc.elements.each("geonames/timezone") do |element|
         timezone.timezone_id    = WebService::get_element_child_text( element, 'timezoneId' )
         timezone.gmt_offset     = WebService::get_element_child_float( element, 'gmtOffset' )
         timezone.dst_offset     = WebService::get_element_child_float( element, 'dstOffset' )
       end
+      timezone
+    end
 
-      return timezone
-
+    def WebService.make_request(path_and_query, *args)
+      url = Geonames::base_url + path_and_query
+      url = url + "&username=#{Geonames::username}" if Geonames::username
+      options = {
+        :open_timeout => 60,
+        :read_timeout => 60
+      }
+      options.update(args.last.is_a?(::Hash) ? args.pop : {})
+      uri = URI.parse(url)
+      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
+      Net::HTTP.start(uri.host, uri.port) { |http|
+        http.read_timeout = options[:read_timeout]
+        http.open_timeout = options[:open_timeout]
+        http.request(req)
+      }
     end
 
     def WebService.findNearbyWikipedia( hashes )
