@@ -49,11 +49,11 @@ module Geonames
             end
             
             if !@latitude.nil?
-                url = url + "&lat" + CGI::escape( @latitude )
+                url = url + "&lat" + CGI::escape( @latitude.to_s )
             end
             
             if !@longitude.nil?
-                url = url + "&lng" + CGI::escape( @longitude )
+                url = url + "&lng" + CGI::escape( @longitude.to_s )
             end
 
             if !@style.nil?
