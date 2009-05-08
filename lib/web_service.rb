@@ -46,8 +46,8 @@ module Geonames
       postal_code.admin_name_2    = WebService::get_element_child_text( element, 'adminName2' )
       postal_code.country_code    = WebService::get_element_child_text( element, 'countryCode' )
       postal_code.distance        = WebService::get_element_child_float( element, 'distance' )
-      postal_code.longitude       = WebService::get_element_child_float( element, 'lat' )
-      postal_code.latitude        = WebService::get_element_child_float( element, 'lng' )
+      postal_code.longitude       = WebService::get_element_child_float( element, 'lng' )
+      postal_code.latitude        = WebService::get_element_child_float( element, 'lat' )
       postal_code.place_name      = WebService::get_element_child_text( element, 'name' )
       postal_code.postal_code     = WebService::get_element_child_text( element, 'postalcode' )
 
