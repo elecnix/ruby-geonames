@@ -8,8 +8,8 @@ SPEC = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY 
   s.summary = "Ruby library for Geonames Web Services (http://www.geonames.org/export/)" 
   candidates = Dir.glob("{bin,docs,lib,test}/**/*") 
-  s.files = ["README", Dir.glob('lib/*.rb')].flatten
+  s.files = ["README.markdown", Dir.glob('lib/*.rb')].flatten
   s.require_path = "lib" 
   s.has_rdoc = true 
-  s.extra_rdoc_files = ["README"]
+  s.extra_rdoc_files = ["README.markdown"]
 end 
