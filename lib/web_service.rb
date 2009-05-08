@@ -383,13 +383,19 @@ module Geonames
 
     end
 
-    def WebService.country_subdivision ( lat, long )
-      country_subdivision = CountrySubdivision.new
-
-      url = Geonames::GEONAMES_SERVER + "/countrySubdivision?a=a"
+    def WebService.country_subdivision ( lat, long, radius = 0, maxRows = 1 )
+      
+      country_subdivisions = Array.new
+      
+      # maxRows is only implemented in the xml version:
+      # http://groups.google.com/group/geonames/browse_thread/thread/f7f1bb2504ed216e
+      # Therefore 'type=xml' is added:
+      url = Geonames::GEONAMES_SERVER + "/countrySubdivision?a=a&type=xml"
 
       url = url + "&lat=" + lat.to_s
       url = url + "&lng=" + long.to_s
+      url = url + "&maxRows=" + maxRows.to_s
+      url = url + "&radius=" + radius.to_s
 
       uri = URI.parse(url)
 
@@ -402,13 +408,21 @@ module Geonames
       doc = REXML::Document.new res.body
 
       doc.elements.each("geonames/countrySubdivision") do |element|
+
+        country_subdivision = CountrySubdivision.new
+
         country_subdivision.country_code    = WebService::get_element_child_text( element, 'countryCode' )
         country_subdivision.country_name    = WebService::get_element_child_text( element, 'countryName' )
         country_subdivision.admin_code_1    = WebService::get_element_child_text( element, 'adminCode1' )
         country_subdivision.admin_name_1    = WebService::get_element_child_text( element, 'adminName1' )
+        country_subdivision.code_fips       = WebService::get_element_child_text( element, 'code[@type="FIPS10-4"]')
+        country_subdivision.code_iso        = WebService::get_element_child_text( element, 'code[@type="ISO3166-2"]')
+
+        country_subdivisions << country_subdivision
+
       end
 
-      return country_subdivision
+      return country_subdivisions
 
     end
 
@@ -426,12 +440,18 @@ module Geonames
       return WebService.element_to_country_info(doc.elements["geonames/country"])
     end
 
-    def WebService.country_code ( lat, long )
+    def WebService.country_code ( lat, long, radius = 0, maxRows = 1 )
+      # maxRows is only implemented in the xml version:
+      # http://groups.google.com/group/geonames/browse_thread/thread/f7f1bb2504ed216e
+      # Therefore 'type=xml' is added:
+      url = Geonames::GEONAMES_SERVER + "/countrycode?a=a&type=xml"
 
-      url = Geonames::GEONAMES_SERVER + "/countrycode?a=a"
+      countries = Array.new
 
       url = url + "&lat=" + lat.to_s
       url = url + "&lng=" + long.to_s
+      url = url + "&maxRows=" + maxRows.to_s
+      url = url + "&radius=" + radius.to_s
 
       uri = URI.parse(url)
 
@@ -443,7 +463,13 @@ module Geonames
 
       doc = REXML::Document.new res.body
 
-      return res.body.strip
+      doc.elements.each("geonames/country") do |element|
+
+        countries << WebService::element_to_toponym( element )
+
+      end
+
+      return countries
 
     end
 
