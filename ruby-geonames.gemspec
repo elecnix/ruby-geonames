@@ -1,6 +1,6 @@
 SPEC = Gem::Specification.new do |s| 
   s.name = "ruby-geonames" 
-  s.version = "0.2.2" 
+  s.version = "0.2.3"
   s.author = "Adam Wisniewski" 
   s.email = "adamw@tbcn.ca" 
   s.date = "2009-05-07"
