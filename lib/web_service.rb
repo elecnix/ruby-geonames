@@ -116,6 +116,33 @@ module Geonames
       return intersection
 
     end
+    
+    def WebService.element_to_country_info(element)
+      country_info = CountryInfo.new
+      
+      country_info.country_code = WebService.get_element_child_text(element, 'countryCode')
+      country_info.country_name = WebService.get_element_child_text(element, 'countryName')
+      country_info.iso_numeric = WebService.get_element_child_int(element, 'isoNumeric')
+      country_info.iso_alpha_3 = WebService.get_element_child_text(element, 'isoAlpha3')
+      country_info.fips_code = WebService.get_element_child_text(element, 'fipsCode')
+      country_info.continent = WebService.get_element_child_text(element, 'continent')
+      country_info.capital = WebService.get_element_child_text(element, 'capital')
+      country_info.area_sq_km = WebService.get_element_child_float(element, 'areaInSqKm')
+      country_info.population = WebService.get_element_child_int(element, 'population')
+      country_info.currency_code = WebService.get_element_child_text(element, 'currencyCode')
+      #actually an array of the available languages
+      country_info.languages = WebService.get_element_child_text(element, 'languages').split(",")
+      country_info.geoname_id = WebService.get_element_child_int(element, 'geonameId')
+      
+      north = WebService.get_element_child_float(element, 'bBoxNorth')
+      south = WebService.get_element_child_float(element, 'bBoxSouth')
+      east = WebService.get_element_child_float(element, 'bBoxEast')
+      west = WebService.get_element_child_float(element, 'bBoxWest')
+      
+      country_info.set_bounding_box(north, south, east, west)
+      
+      return country_info
+    end
 
     def WebService.postal_code_search( postal_code, place_name, country_code )
       postal_code_sc = PostalCodeSearchCriteria.new
@@ -383,6 +410,20 @@ module Geonames
 
       return country_subdivision
 
+    end
+
+    def WebService.country_info(country_code)
+      url = Geonames::GEONAMES_SERVER + "/countryInfo?a=a"
+      
+      url += "&country=#{country_code.to_s}"
+      uri = URI.parse(url)
+      
+      req = Net::HTTP::Get.new(uri.path + "?" + uri.query)
+      res = Net::HTTP.start(uri.host, uri.port) { |http| http.request(req)}
+      
+      doc = REXML::Document.new res.body
+      
+      return WebService.element_to_country_info(doc.elements["geonames/country"])
     end
 
     def WebService.country_code ( lat, long )
