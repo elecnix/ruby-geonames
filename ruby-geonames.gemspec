@@ -1,9 +1,9 @@
 SPEC = Gem::Specification.new do |s| 
   s.name = "ruby-geonames" 
-  s.version = "0.2.6"
+  s.version = "0.2.7"
   s.author = "Adam Wisniewski" 
   s.email = "adamw@tbcn.ca" 
-  s.date = "2009-05-08"
+  s.date = "2009-07-07"
   s.homepage = "http://github.com/elecnix/ruby-geonames"
   s.platform = Gem::Platform::RUBY 
   s.summary = "Ruby library for Geonames Web Services (http://www.geonames.org/export/)" 
