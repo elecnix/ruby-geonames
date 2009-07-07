@@ -157,16 +157,10 @@ module Geonames
       # postal codes to reutrn
       postal_codes = Array.new
 
-      url = Geonames::GEONAMES_SERVER + "/postalCodeSearch?a=a"
+      url = "/postalCodeSearch?a=a"
       url = url + search_criteria.to_query_params_string
 
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
@@ -182,16 +176,10 @@ module Geonames
       # postal codes to reutrn
       postal_codes = Array.new
 
-      url = Geonames::GEONAMES_SERVER + "/findNearbyPostalCodes?a=a"
+      url = "/findNearbyPostalCodes?a=a"
       url = url + search_criteria.to_query_params_string
 
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
@@ -206,18 +194,12 @@ module Geonames
     def WebService.find_nearby_place_name( lat, long )
       places = Array.new
 
-      url = Geonames::GEONAMES_SERVER + "/findNearbyPlaceName?a=a"
+      url = "/findNearbyPlaceName?a=a"
 
       url = url + "&lat=" + lat.to_s
       url = url + "&lng=" + long.to_s
 
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
@@ -233,18 +215,12 @@ module Geonames
 
     def WebService.find_nearest_intersection( lat, long )
 
-      url = Geonames::GEONAMES_SERVER + "/findNearestIntersection?a=a"
+      url = "/findNearestIntersection?a=a"
 
       url = url + "&lat=" + lat.to_s
       url = url + "&lng=" + long.to_s
 
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
@@ -305,7 +281,7 @@ module Geonames
       postalcode = hashes[:postalcode]
       q = hashes[:q]
 
-      url = Geonames::GEONAMES_SERVER + "/findNearbyWikipedia?a=a"
+      url = "/findNearbyWikipedia?a=a"
 
       if !lat.nil? && !long.nil?
         url = url + "&lat=" + lat.to_s
@@ -319,13 +295,7 @@ module Geonames
         url = url + "&max_rows=" + max_rows.to_s unless max_rows.nil?
       end
 
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
@@ -356,7 +326,7 @@ module Geonames
       postalcode = hashes[:postalcode]
       q = hashes[:q]
 
-      url = Geonames::GEONAMES_SERVER + "/wikipediaBoundingBox?a=a"
+      url = "/wikipediaBoundingBox?a=a"
 
       url = url + "&north=" + north.to_s
       url = url + "&east=" + east.to_s
@@ -365,13 +335,7 @@ module Geonames
       url = url + "&radius=" + radius.to_s unless radius.nil?
       url = url + "&max_rows=" + max_rows.to_s unless max_rows.nil?
 
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
@@ -390,20 +354,14 @@ module Geonames
       # maxRows is only implemented in the xml version:
       # http://groups.google.com/group/geonames/browse_thread/thread/f7f1bb2504ed216e
       # Therefore 'type=xml' is added:
-      url = Geonames::GEONAMES_SERVER + "/countrySubdivision?a=a&type=xml"
+      url = "/countrySubdivision?a=a&type=xml"
 
       url = url + "&lat=" + lat.to_s
       url = url + "&lng=" + long.to_s
       url = url + "&maxRows=" + maxRows.to_s
       url = url + "&radius=" + radius.to_s
 
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
@@ -427,13 +385,10 @@ module Geonames
     end
 
     def WebService.country_info(country_code)
-      url = Geonames::GEONAMES_SERVER + "/countryInfo?a=a"
+      url = "/countryInfo?a=a"
       
       url += "&country=#{country_code.to_s}"
-      uri = URI.parse(url)
-      
-      req = Net::HTTP::Get.new(uri.path + "?" + uri.query)
-      res = Net::HTTP.start(uri.host, uri.port) { |http| http.request(req)}
+      res = make_request(url)
       
       doc = REXML::Document.new res.body
       
@@ -444,7 +399,7 @@ module Geonames
       # maxRows is only implemented in the xml version:
       # http://groups.google.com/group/geonames/browse_thread/thread/f7f1bb2504ed216e
       # Therefore 'type=xml' is added:
-      url = Geonames::GEONAMES_SERVER + "/countrycode?a=a&type=xml"
+      url = "/countrycode?a=a&type=xml"
 
       countries = Array.new
 
@@ -453,13 +408,7 @@ module Geonames
       url = url + "&maxRows=" + maxRows.to_s
       url = url + "&radius=" + radius.to_s
 
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
@@ -477,7 +426,7 @@ module Geonames
       #toponym search results to return
       toponym_sr = ToponymSearchResult.new
 
-      url = Geonames::GEONAMES_SERVER + "/search?a=a"
+      url = "/search?a=a"
 
       if !search_criteria.q.nil?
         url = url + "&q=" + CGI::escape( search_criteria.q )
@@ -532,14 +481,8 @@ module Geonames
       if !search_criteria.style.nil?
         url = url + "&style=" + CGI::escape( search_criteria.style )
       end
-
-      uri = URI.parse(url)
-
-      req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
-
-      res = Net::HTTP.start( uri.host, uri.port ) { |http|
-        http.request( req )
-      }
+      
+      res = make_request(url)
 
       doc = REXML::Document.new res.body
 
