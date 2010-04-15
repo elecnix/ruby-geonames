@@ -91,6 +91,10 @@ module Geonames
       toponym.population          = WebService::get_element_child_int( element, 'population' )
       toponym.elevation           = WebService::get_element_child_text( element, 'elevation' )
       toponym.distance            = WebService::get_element_child_float( element, 'distance' )
+      toponym.admin_code_1        = WebService::get_element_child_text( element, 'adminCode1' )
+      toponym.admin_code_2        = WebService::get_element_child_text( element, 'adminCode2' )
+      toponym.admin_name_1        = WebService::get_element_child_text( element, 'adminName1' )
+      toponym.admin_name_2        = WebService::get_element_child_text( element, 'adminName2' )
 
       return toponym
 
