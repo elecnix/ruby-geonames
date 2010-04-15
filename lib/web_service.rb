@@ -87,7 +87,7 @@ module Geonames
       toponym.feature_class       = WebService::get_element_child_text( element, 'fcl' )
       toponym.feature_code        = WebService::get_element_child_text( element, 'fcode' )
       toponym.feature_class_name  = WebService::get_element_child_text( element, 'fclName' )
-      toponym.feature_code_name   = WebService::get_element_child_text( element, 'fCodeName' )
+      toponym.feature_code_name   = WebService::get_element_child_text( element, 'fcodeName' )
       toponym.population          = WebService::get_element_child_int( element, 'population' )
       toponym.elevation           = WebService::get_element_child_text( element, 'elevation' )
       toponym.distance            = WebService::get_element_child_float( element, 'distance' )
