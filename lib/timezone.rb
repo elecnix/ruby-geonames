@@ -23,6 +23,10 @@ module Geonames
         attr :dst_offset
         
         attr_writer :timezone_id, :gmt_offset, :dst_offset
+
+        def tzinfo
+          TZInfo::Timezone.get(timezone_id)
+        end
   end
 end
 
