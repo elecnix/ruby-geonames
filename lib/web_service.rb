@@ -118,8 +118,7 @@ module Geonames
     end
     
     def WebService.element_to_country_info(element)
-      country_info = CountryInfo.new
-      
+      country_info = Geonames::CountryInfo.new
       country_info.country_code = WebService.get_element_child_text(element, 'countryCode')
       country_info.country_name = WebService.get_element_child_text(element, 'countryName')
       country_info.iso_numeric = WebService.get_element_child_int(element, 'isoNumeric')
@@ -384,15 +383,20 @@ module Geonames
 
     end
 
-    def WebService.country_info(country_code)
+    def WebService.country_info(country_code = false)
       url = "/countryInfo?a=a"
       
-      url += "&country=#{country_code.to_s}"
+      url += "&country=#{country_code.to_s}" if country_code
       res = make_request(url)
       
       doc = REXML::Document.new res.body
       
-      return WebService.element_to_country_info(doc.elements["geonames/country"])
+      countries = Array.new
+
+      doc.elements.each("geonames/country") do |element|
+        countries << WebService::element_to_country_info( element )
+      end
+      countries.size > 1 ? countries : countries[0]
     end
 
     def WebService.country_code ( lat, long, radius = 0, maxRows = 1 )
