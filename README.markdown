@@ -56,6 +56,16 @@ outputs:
     postal_codes_nearby = Geonames::WebService.find_nearby_postal_codes postal_code_sc
     p postal_codes_nearby
 
+## Language Support
+
+Geonames uses 'en' as the default locale. You can change the requested language like this:
+
+    Geonames::lang = 'de'
+
+In a Rails application, you could set the language from the I18n.locale:
+
+    Geonames::lang = I18n.locale
+
 ## Commercial Service Support
 
 If you use the commercial service, you should put something like this in your configuration:
@@ -63,7 +73,7 @@ If you use the commercial service, you should put something like this in your co
     Geonames::username = 'username'
     Geonames::base_url = 'http://ws.geonames.net'
 
-In a Rails application, this would go in the `config/environment.rb` file.
+In a Rails application, this could go into `config/initializers/geonames.rb`.
 
 # Contributors
 

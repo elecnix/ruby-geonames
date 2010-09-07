@@ -38,6 +38,7 @@ module Geonames
   
   @@username = nil
   @@base_url = "http://ws.geonames.org"
+  @@lang = "en"
 
   def self.username
     @@username
@@ -53,6 +54,14 @@ module Geonames
 
   def self.base_url=(base_url)
     @@base_url = base_url
+  end
+
+  def self.lang
+    @@lang
+  end
+
+  def self.lang=(lang)
+    @@lang = lang
   end
 
 end
