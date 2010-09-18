@@ -251,9 +251,9 @@ module Geonames
     end
 
     def WebService.make_request(path_and_query, *args)
-      url = Geonames::base_url + path_and_query
-      url += "&username=#{Geonames::username}" if Geonames::username
-      url += "&lang=#{Geonames::lang}"
+      url = Geonames.base_url + path_and_query
+      url += "&username=#{Geonames.username}" if Geonames.username
+      url += "&lang=#{Geonames.lang}"
       options = {
         :open_timeout => 60,
         :read_timeout => 60

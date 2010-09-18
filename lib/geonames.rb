@@ -32,36 +32,29 @@ require 'wikipedia_article'
 require 'intersection'
 
 module Geonames
-  
+  autoload :Config,  'geonames/config'
+
   GEONAMES_SERVER = "http://ws.geonames.org"
   USER_AGENT = "geonames ruby webservice client 0.1"
-  
-  @@username = nil
-  @@base_url = "http://ws.geonames.org"
-  @@lang = "en"
 
-  def self.username
-    @@username
-  end
+  class << self
 
-  def self.username=(username)
-    @@username = username
-  end
+    def config
+      Thread.current[:geonames_config] ||= Geonames::Config.new
+    end
 
-  def self.base_url
-    @@base_url
-  end
+    %w(lang username base_url).each do |method|
+      module_eval <<-DELEGATORS, __FILE__, __LINE__ + 1
+        def #{method}
+          config.#{method}
+        end
 
-  def self.base_url=(base_url)
-    @@base_url = base_url
-  end
+        def #{method}=(value)
+          config.#{method} = (value)
+        end
+      DELEGATORS
+    end
 
-  def self.lang
-    @@lang
-  end
-
-  def self.lang=(lang)
-    @@lang = lang
   end
 
 end

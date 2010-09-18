@@ -60,18 +60,18 @@ outputs:
 
 Geonames uses 'en' as the default locale. You can change the requested language like this:
 
-    Geonames::lang = 'de'
+    Geonames.lang = 'de'
 
 In a Rails application, you could set the language from the I18n.locale:
 
-    Geonames::lang = I18n.locale
+    Geonames.lang = I18n.locale
 
 ## Commercial Service Support
 
 If you use the commercial service, you should put something like this in your configuration:
 
-    Geonames::username = 'username'
-    Geonames::base_url = 'http://ws.geonames.net'
+    Geonames.username = 'username'
+    Geonames.base_url = 'http://ws.geonames.net'
 
 In a Rails application, this could go into `config/initializers/geonames.rb`.
 
