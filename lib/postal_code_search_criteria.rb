@@ -49,15 +49,15 @@ module Geonames
             end
             
             if !@latitude.nil?
-                url = url + "&lat" + CGI::escape( @latitude.to_s )
+                url = url + "&lat=" + CGI::escape( @latitude.to_s )
             end
             
             if !@longitude.nil?
-                url = url + "&lng" + CGI::escape( @longitude.to_s )
+                url = url + "&lng=" + CGI::escape( @longitude.to_s )
             end
 
             if !@style.nil?
-                url = url + "&style" + CGI::escape( @style )
+                url = url + "&style=" + CGI::escape( @style )
             end
             
             if !@country_code.nil? 
