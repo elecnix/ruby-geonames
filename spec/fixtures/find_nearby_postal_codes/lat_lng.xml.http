@@ -1,0 +1,81 @@
+HTTP/1.1 200 OK
+Date: Wed, 22 Sep 2010 01:12:12 GMT
+Server: Apache/2.2.13 (Linux/SUSE)
+Cache-Control: no-cache
+Access-Control-Allow-Origin: *
+Transfer-Encoding: chunked
+Content-Type: text/xml;charset=UTF-8
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<geonames>
+<code>
+<postalcode>8750</postalcode>
+<name>Klöntal</name>
+<countryCode>CH</countryCode>
+<lat>47.021</lat>
+<lng>8.97896</lng>
+<adminCode1>GL</adminCode1>
+<adminName1>Glarus</adminName1>
+<adminCode2>800</adminCode2>
+<adminName2>Glarus</adminName2>
+<adminCode3>1609</adminCode3>
+<adminName3>Glarus</adminName3>
+<distance>2.827649162427546</distance>
+</code>
+<code>
+<postalcode>8750</postalcode>
+<name>Glarus Zustellung</name>
+<countryCode>CH</countryCode>
+<lat>47.021</lat>
+<lng>8.97896</lng>
+<adminCode1>GL</adminCode1>
+<adminName1>Glarus</adminName1>
+<adminCode2>800</adminCode2>
+<adminName2>Glarus</adminName2>
+<adminCode3>1609</adminCode3>
+<adminName3>Glarus</adminName3>
+<distance>2.827649162427546</distance>
+</code>
+<code>
+<postalcode>8772</postalcode>
+<name>Nidfurn</name>
+<countryCode>CH</countryCode>
+<lat>46.98333</lat>
+<lng>9.05</lng>
+<adminCode1>GL</adminCode1>
+<adminName1>Glarus</adminName1>
+<adminCode2>800</adminCode2>
+<adminName2>Glarus</adminName2>
+<adminCode3>1621</adminCode3>
+<adminName3>Nidfurn</adminName3>
+<distance>4.220733421769597</distance>
+</code>
+<code>
+<postalcode>8775</postalcode>
+<name>Luchsingen</name>
+<countryCode>CH</countryCode>
+<lat>46.96667</lat>
+<lng>9.03333</lng>
+<adminCode1>GL</adminCode1>
+<adminName1>Glarus</adminName1>
+<adminCode2>800</adminCode2>
+<adminName2>Glarus</adminName2>
+<adminCode3>1614</adminCode3>
+<adminName3>Luchsingen</adminName3>
+<distance>4.486650531422443</distance>
+</code>
+<code>
+<postalcode>8773</postalcode>
+<name>Haslen GL</name>
+<countryCode>CH</countryCode>
+<lat>46.96333</lat>
+<lng>9.03667</lng>
+<adminCode1>GL</adminCode1>
+<adminName1>Glarus</adminName1>
+<adminCode2>800</adminCode2>
+<adminName2>Glarus</adminName2>
+<adminCode3>1610</adminCode3>
+<adminName3>Haslen</adminName3>
+<distance>4.93536846606444</distance>
+</code>
+</geonames>
