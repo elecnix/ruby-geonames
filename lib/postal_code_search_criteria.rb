@@ -65,7 +65,7 @@ module Geonames
             end
             
             if !@max_rows.nil? 
-              url = url + "&maxRows=" + CGI::escape( @max_rows )
+              url = url + "&maxRows=" + CGI::escape( @max_rows.to_s )
             end
 
             if !@radius.nil? 
