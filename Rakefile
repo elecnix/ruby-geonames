@@ -8,6 +8,7 @@ RSpec::Core::RakeTask.new
 
 namespace :spec do
   RSpec::Core::RakeTask.new :rcov do |task|
-    task.rcov = true
+    task.rcov      = true
+    task.rcov_opts = "--exclude spec/*,gems/*"
   end
 end
