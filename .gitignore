@@ -1,2 +1,4 @@
 *~
 nbproject
+.bundle
+vendor/bundle
