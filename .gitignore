@@ -2,3 +2,4 @@
 nbproject
 .bundle
 vendor/bundle
+coverage
