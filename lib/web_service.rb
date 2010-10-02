@@ -147,23 +147,23 @@ module Geonames
       return country_info
     end
 
-    def WebService.postal_code_search( postal_code, place_name, country_code )
+    def WebService.postal_code_search( postal_code, place_name, country_code,*args )
       postal_code_sc = PostalCodeSearchCriteria.new
       postal_code_sc.postal_code = postal_code
       postal_code_sc.place_name = place_name
       postal_code_sc.country_code = country_code
 
-      WebService.postal_code_search postal_code_sc
+      WebService.postal_code_search postal_code_sc, args
     end
 
-    def WebService.postal_code_search( search_criteria )
+    def WebService.postal_code_search( search_criteria, *args )
       # postal codes to reutrn
       postal_codes = Array.new
 
       url = "/postalCodeSearch?a=a"
       url = url + search_criteria.to_query_params_string
 
-      res = make_request(url)
+      res = make_request(url,args)
 
       doc = REXML::Document.new res.body
 
