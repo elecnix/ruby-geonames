@@ -30,6 +30,7 @@ module Geonames
         attr :feature_class
         attr :feature_codes
         attr :admin_code_1
+        attr :country_bias
         attr :max_rows
         attr :start_row
 
@@ -37,6 +38,7 @@ module Geonames
         attr_writer :name_starts_with, :tag, :language, :style
         attr_writer :feature_class, :feature_codes, :admin_code_1
         attr_writer :max_rows, :start_row
+        attr_writer :country_bias
     
     end
 end

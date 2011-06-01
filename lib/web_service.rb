@@ -475,8 +475,12 @@ module Geonames
 
       if !search_criteria.feature_codes.nil?
         for feature_code in search_criteria.feature_codes
-          url = url + "&fcode=" + CGI::escape( feature_code )
+          url = url + "&featureCode=" + CGI::escape( feature_code )
         end
+      end
+
+      if !search_criteria.country_bias.nil?
+        url = url + "&countryBias=" + CGI::escape( search_criteria.country_bias )
       end
 
       if !search_criteria.max_rows.nil?
