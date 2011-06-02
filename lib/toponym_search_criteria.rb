@@ -31,6 +31,7 @@ module Geonames
         attr :feature_codes
         attr :admin_code_1
         attr :country_bias
+		attr :name_required?
         attr :max_rows
         attr :start_row
 
@@ -39,6 +40,7 @@ module Geonames
         attr_writer :feature_class, :feature_codes, :admin_code_1
         attr_writer :max_rows, :start_row
         attr_writer :country_bias
+		attr_writer :name_required?
     
     end
 end
