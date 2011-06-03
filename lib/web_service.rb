@@ -438,61 +438,65 @@ module Geonames
       url = "/search?a=a"
 
       if !search_criteria.q.nil?
-        url = url + "&q=" + CGI::escape( search_criteria.q )
+        url << "&q=#{CGI::escape( search_criteria.q )}"
       end
 
       if !search_criteria.name_equals.nil?
-        url = url + "&name_equals=" + CGI::escape( search_criteria.name_equals )
+        url << "&name_equals=#{CGI::escape( search_criteria.name_equals )}"
       end
 
       if !search_criteria.name_starts_with.nil?
-        url = url + "&name_startsWith=" + CGI::escape( search_criteria.name_starts_with )
+        url << "&name_startsWith=#{CGI::escape( search_criteria.name_starts_with )}"
       end
 
       if !search_criteria.name.nil?
-        url = url + "&name=" + CGI::escape( search_criteria.name )
+        url << "&name=#{CGI::escape( search_criteria.name )}"
       end
 
       if !search_criteria.tag.nil?
-        url = url + "&tag=" + CGI::escape( search_criteria.tag )
+        url << "&tag=#{CGI::escape( search_criteria.tag )}"
       end
 
       if !search_criteria.country_code.nil?
-        url = url + "&country=" + CGI::escape( search_criteria.country_code )
+        url << "&country=#{CGI::escape( search_criteria.country_code )}"
       end
 
       if !search_criteria.admin_code_1.nil?
-        url = url + "&adminCode1=" + CGI::escape( search_criteria.admin_code_1 )
+        url << "&adminCode1=#{CGI::escape( search_criteria.admin_code_1 )}"
       end
 
       if !search_criteria.language.nil?
-        url = url + "&lang=" + CGI::escape( search_criteria.language )
+        url << "&lang=#{CGI::escape( search_criteria.language )}"
       end
 
       if !search_criteria.feature_class.nil?
-        url = url + "&featureClass=" + CGI::escape( search_criteria.feature_class )
+        url << "&featureClass=#{CGI::escape( search_criteria.feature_class )}"
       end
 
       if !search_criteria.feature_codes.nil?
         for feature_code in search_criteria.feature_codes
-          url = url + "&featureCode=" + CGI::escape( feature_code )
+          url << "&featureCode=#{CGI::escape( feature_code )}"
         end
       end
 
       if !search_criteria.country_bias.nil?
-        url = url + "&countryBias=" + CGI::escape( search_criteria.country_bias )
+        url << "&countryBias=#{CGI::escape( search_criteria.country_bias )}"
       end
+	  
+	  if search_criteria.name_required?
+		url << "&isNameRequired=true"
+	  end
 
       if !search_criteria.max_rows.nil?
-        url = url + "&maxRows=" + CGI::escape( search_criteria.max_rows )
+        url << "&maxRows=#{CGI::escape( search_criteria.max_rows )}"
       end
 
       if !search_criteria.start_row.nil?
-        url = url + "&startRow=" + CGI::escape( search_criteria.start_row )
+        url << "&startRow=#{CGI::escape( search_criteria.start_row )}"
       end
 
       if !search_criteria.style.nil?
-        url = url + "&style=" + CGI::escape( search_criteria.style )
+        url << "&style=#{CGI::escape( search_criteria.style )}"
       end
       
       res = make_request(url)
