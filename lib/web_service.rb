@@ -122,7 +122,7 @@ module Geonames
     end
     
     def WebService.element_to_country_info(element)
-      country_info = Geonames::CountryInfo.new
+      country_info = CountryInfo.new
       country_info.country_code = WebService.get_element_child_text(element, 'countryCode')
       country_info.country_name = WebService.get_element_child_text(element, 'countryName')
       country_info.iso_numeric = WebService.get_element_child_int(element, 'isoNumeric')
