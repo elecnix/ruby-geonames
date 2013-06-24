@@ -278,7 +278,7 @@ module Geonames
         url << "&max_rows=#{max_rows}" unless max_rows.nil?
 
       elsif !q.nil?
-        url << "&q=#{q}" + q
+        url << "&q=#{q}" 
         url << "&radius=#{radius}" unless radius.nil?
         url << "&max_rows=#{max_rows}" unless max_rows.nil?
       end
