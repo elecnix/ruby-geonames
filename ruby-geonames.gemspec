@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.markdown"]
   s.required_rubygems_version = ">= 1.3.6"
-  s.add_development_dependency "bundler", "~> 1.0.0"
+  s.add_development_dependency "bundler", "~> 1.3.5"
   s.add_development_dependency "fakeweb", "~> 1.3.0"
-  s.add_development_dependency "rake"
+  s.add_development_dependency "rake", "~> 10.1.0"
   s.add_development_dependency "rcov", "~> 0.9.9"
-  s.add_development_dependency "rspec", "2.0.0.beta.20"
+  s.add_development_dependency "rspec", "2.13.0"
 end

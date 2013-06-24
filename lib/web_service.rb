@@ -20,21 +20,15 @@
 module Geonames
   class WebService
     def WebService.get_element_child_text( element, child )
-      if !element.elements[child].nil?
-        element.elements[child][0].to_s
-      end
+      element.elements[child][0].to_s unless element.elements[child].nil?
     end
 
     def WebService.get_element_child_float( element, child )
-      if !element.elements[child].nil?
-        element.elements[child][0].to_s.to_f
-      end
+      element.elements[child][0].to_s.to_f unless element.elements[child].nil?
     end
 
     def WebService.get_element_child_int( element, child )
-      if !element.elements[child].nil?
-        element.elements[child][0].to_s.to_i
-      end
+      element.elements[child][0].to_s.to_i unless element.elements[child].nil?
     end
 
     def WebService.element_to_postal_code ( element )
@@ -52,7 +46,6 @@ module Geonames
       postal_code.postal_code     = WebService::get_element_child_text( element, 'postalcode' )
 
       return postal_code
-
     end
 
     def WebService.element_to_wikipedia_article ( element )
@@ -71,7 +64,6 @@ module Geonames
       article.distance              = WebService::get_element_child_float( element, 'distance' )
 
       return article
-
     end
 
     def WebService.element_to_toponym ( element )
@@ -97,7 +89,6 @@ module Geonames
       toponym.admin_name_2        = WebService::get_element_child_text( element, 'adminName2' )
 
       return toponym
-
     end
 
     def WebService.element_to_intersection ( element )
@@ -118,11 +109,11 @@ module Geonames
       intersection.postal_code     = WebService::get_element_child_text( element, 'postalcode' )
 
       return intersection
-
     end
     
     def WebService.element_to_country_info(element)
       country_info = CountryInfo.new
+
       country_info.country_code = WebService.get_element_child_text(element, 'countryCode')
       country_info.country_name = WebService.get_element_child_text(element, 'countryName')
       country_info.iso_numeric = WebService.get_element_child_int(element, 'isoNumeric')
@@ -153,7 +144,7 @@ module Geonames
       postal_code_sc.place_name = place_name
       postal_code_sc.country_code = country_code
 
-      WebService.postal_code_search postal_code_sc, args
+      WebService.postal_code_search(postal_code_sc, args)
     end
 
     def WebService.postal_code_search( search_criteria, *args )
@@ -161,30 +152,27 @@ module Geonames
       postal_codes = Array.new
 
       url = "/postalCodeSearch?a=a"
-      url = url + search_criteria.to_query_params_string
+      url << search_criteria.to_query_params_string
 
       res = make_request(url,args)
-
-      doc = REXML::Document.new res.body
+      doc = REXML::Document.new(res.body)
 
       doc.elements.each("geonames/code") do |element|
         postal_codes << WebService::element_to_postal_code( element )
       end
 
       postal_codes
-
     end
 
     def WebService.find_nearby_postal_codes( search_criteria )
-      # postal codes to reutrn
+      # postal codes to return
       postal_codes = Array.new
 
       url = "/findNearbyPostalCodes?a=a"
       url = url + search_criteria.to_query_params_string
 
       res = make_request(url)
-
-      doc = REXML::Document.new res.body
+      doc = REXML::Document.new(res.body)
 
       doc.elements.each("geonames/code") do |element|
         postal_codes << WebService::element_to_postal_code( element )
@@ -199,47 +187,40 @@ module Geonames
 
       url = "/findNearbyPlaceName?a=a"
 
-      url = url + "&lat=" + lat.to_s
-      url = url + "&lng=" + long.to_s
+      url << "&lat=#{lat}"
+      url << "&lng=#{long}"
 
       res = make_request(url)
 
       doc = REXML::Document.new res.body
 
       doc.elements.each("geonames/geoname") do |element|
-
         places << WebService::element_to_toponym( element )
-
       end
 
       return places
-
     end
 
     def WebService.find_nearest_intersection( lat, long )
-
       url = "/findNearestIntersection?a=a"
 
-      url = url + "&lat=" + lat.to_s
-      url = url + "&lng=" + long.to_s
+      url << "&lat=#{lat}"
+      url << "&lng=#{long}"
 
       res = make_request(url)
-
       doc = REXML::Document.new res.body
 
       intersection = []
       doc.elements.each("geonames/intersection") do |element|
-
         intersection = WebService::element_to_intersection( element )
-
       end
 
       return intersection
-
     end
 
     def WebService.timezone( lat, long, *args )
       res = make_request("/timezone?lat=#{lat.to_s}&lng=#{long.to_s}", args)
+
       doc = REXML::Document.new res.body
       timezone = Timezone.new
       doc.elements.each("geonames/timezone") do |element|
@@ -247,17 +228,20 @@ module Geonames
         timezone.gmt_offset     = WebService::get_element_child_float( element, 'gmtOffset' )
         timezone.dst_offset     = WebService::get_element_child_float( element, 'dstOffset' )
       end
+
       timezone
     end
 
     def WebService.make_request(path_and_query, *args)
       url = Geonames.base_url + path_and_query
-      url += "&username=#{Geonames.username}" if Geonames.username
-      url += "&lang=#{Geonames.lang}"
+      url << "&username=#{Geonames.username}" if Geonames.username
+      url << "&lang=#{Geonames.lang}"
+
       options = {
         :open_timeout => 60,
         :read_timeout => 60
       }
+
       options.update(args.last.is_a?(::Hash) ? args.pop : {})
       uri = URI.parse(url)
       req = Net::HTTP::Get.new(uri.path + '?' + uri.query)
@@ -288,19 +272,18 @@ module Geonames
       url = "/findNearbyWikipedia?a=a"
 
       if !lat.nil? && !long.nil?
-        url = url + "&lat=" + lat.to_s
-        url = url + "&lng=" + long.to_s
-        url = url + "&radius=" + radius.to_s unless radius.nil?
-        url = url + "&max_rows=" + max_rows.to_s unless max_rows.nil?
+        url << "&lat=#{lat}"
+        url << "&lng=#{long}"
+        url << "&radius=#{radius}" unless radius.nil?
+        url << "&max_rows=#{max_rows}" unless max_rows.nil?
 
       elsif !q.nil?
-        url = url + "&q=" + q
-        url = url + "&radius=" + radius.to_s unless radius.nil?
-        url = url + "&max_rows=" + max_rows.to_s unless max_rows.nil?
+        url << "&q=#{q}" + q
+        url << "&radius=#{radius}" unless radius.nil?
+        url << "&max_rows=#{max_rows}" unless max_rows.nil?
       end
 
       res = make_request(url)
-
       doc = REXML::Document.new res.body
 
       doc.elements.each("geonames/entry") do |element|
@@ -308,7 +291,6 @@ module Geonames
       end
 
       return articles
-
     end
 
     def WebService.findBoundingBoxWikipedia( hashes )
@@ -332,15 +314,14 @@ module Geonames
 
       url = "/wikipediaBoundingBox?a=a"
 
-      url = url + "&north=" + north.to_s
-      url = url + "&east=" + east.to_s
-      url = url + "&south=" + south.to_s
-      url = url + "&west=" + west.to_s
-      url = url + "&radius=" + radius.to_s unless radius.nil?
-      url = url + "&max_rows=" + max_rows.to_s unless max_rows.nil?
+      url << "&north=#{north}"
+      url << "&east=#{east}" 
+      url << "&south=#{south}"
+      url << "&west=#{west}"
+      url << "&radius=#{radius}" unless radius.nil?
+      url << "&max_rows=#{max_rows}" unless max_rows.nil?
 
       res = make_request(url)
-
       doc = REXML::Document.new res.body
 
       doc.elements.each("geonames/entry") do |element|
@@ -348,11 +329,9 @@ module Geonames
       end
 
       return articles
-
     end
 
-    def WebService.country_subdivision ( lat, long, radius = 0, maxRows = 1 )
-      
+    def WebService.country_subdivision ( lat, long, radius = 0, max_rows = 1 )
       country_subdivisions = Array.new
       
       # maxRows is only implemented in the xml version:
@@ -360,19 +339,16 @@ module Geonames
       # Therefore 'type=xml' is added:
       url = "/countrySubdivision?a=a&type=xml"
 
-      url = url + "&lat=" + lat.to_s
-      url = url + "&lng=" + long.to_s
-      url = url + "&maxRows=" + maxRows.to_s
-      url = url + "&radius=" + radius.to_s
+      url << "&lat=#{lat}"
+      url << "&lng=#{long}"
+      url << "&maxRows=#{max_rows}"
+      url << "&radius=#{radius}"
 
       res = make_request(url)
 
       doc = REXML::Document.new res.body
-
       doc.elements.each("geonames/countrySubdivision") do |element|
-
         country_subdivision = CountrySubdivision.new
-
         country_subdivision.country_code    = WebService::get_element_child_text( element, 'countryCode' )
         country_subdivision.country_name    = WebService::get_element_child_text( element, 'countryName' )
         country_subdivision.admin_code_1    = WebService::get_element_child_text( element, 'adminCode1' )
@@ -381,17 +357,15 @@ module Geonames
         country_subdivision.code_iso        = WebService::get_element_child_text( element, 'code[@type="ISO3166-2"]')
 
         country_subdivisions << country_subdivision
-
       end
 
       return country_subdivisions
-
     end
 
     def WebService.country_info(country_code = false)
       url = "/countryInfo?a=a"
       
-      url += "&country=#{country_code.to_s}" if country_code
+      url << "&country=#{country_code.to_s}" if country_code
       res = make_request(url)
       
       doc = REXML::Document.new res.body
@@ -404,7 +378,7 @@ module Geonames
       countries.size > 1 ? countries : countries[0]
     end
 
-    def WebService.country_code ( lat, long, radius = 0, maxRows = 1 )
+    def WebService.country_code ( lat, long, radius = 0, max_rows = 1 )
       # maxRows is only implemented in the xml version:
       # http://groups.google.com/group/geonames/browse_thread/thread/f7f1bb2504ed216e
       # Therefore 'type=xml' is added:
@@ -412,23 +386,19 @@ module Geonames
 
       countries = Array.new
 
-      url = url + "&lat=" + lat.to_s
-      url = url + "&lng=" + long.to_s
-      url = url + "&maxRows=" + maxRows.to_s
-      url = url + "&radius=" + radius.to_s
+      url << "&lat=#{lat}"
+      url << "&lng=#{long}"
+      url << "&maxRows=#{max_rows}"
+      url << "&radius=#{radius}"
 
       res = make_request(url)
-
       doc = REXML::Document.new res.body
 
       doc.elements.each("geonames/country") do |element|
-
         countries << WebService::element_to_toponym( element )
-
       end
 
       return countries
-
     end
 
     def WebService.search( search_criteria )
@@ -437,83 +407,37 @@ module Geonames
 
       url = "/search?a=a"
 
-      if !search_criteria.q.nil?
-        url << "&q=#{CGI::escape( search_criteria.q )}"
-      end
-
-      if !search_criteria.name_equals.nil?
-        url << "&name_equals=#{CGI::escape( search_criteria.name_equals )}"
-      end
-
-      if !search_criteria.name_starts_with.nil?
-        url << "&name_startsWith=#{CGI::escape( search_criteria.name_starts_with )}"
-      end
-
-      if !search_criteria.name.nil?
-        url << "&name=#{CGI::escape( search_criteria.name )}"
-      end
-
-      if !search_criteria.tag.nil?
-        url << "&tag=#{CGI::escape( search_criteria.tag )}"
-      end
-
-      if !search_criteria.country_code.nil?
-        url << "&country=#{CGI::escape( search_criteria.country_code )}"
-      end
-
-      if !search_criteria.admin_code_1.nil?
-        url << "&adminCode1=#{CGI::escape( search_criteria.admin_code_1 )}"
-      end
-
-      if !search_criteria.language.nil?
-        url << "&lang=#{CGI::escape( search_criteria.language )}"
-      end
-
-      if !search_criteria.feature_class.nil?
-        url << "&featureClass=#{CGI::escape( search_criteria.feature_class )}"
-      end
-
-      if !search_criteria.feature_codes.nil?
+      url << "&q=#{CGI::escape( search_criteria.q )}" unless search_criteria.q.nil?
+      url << "&name_equals=#{CGI::escape( search_criteria.name_equals )}"  unless search_criteria.name_equals.nil?
+      url << "&name_startsWith=#{CGI::escape( search_criteria.name_starts_with )}" unless search_criteria.name_starts_with.nil?
+      url << "&name=#{CGI::escape( search_criteria.name )}" unless search_criteria.name.nil?
+      url << "&tag=#{CGI::escape( search_criteria.tag )}"  unless search_criteria.tag.nil?
+      url << "&country=#{CGI::escape( search_criteria.country_code )}" unless search_criteria.country_code.nil?
+      url << "&adminCode1=#{CGI::escape( search_criteria.admin_code_1 )}" unless search_criteria.admin_code_1.nil?
+      url << "&lang=#{CGI::escape( search_criteria.language )}" unless search_criteria.language.nil?
+      url << "&featureClass=#{CGI::escape( search_criteria.feature_class )}" unless search_criteria.feature_class.nil?
+      
+      unless search_criteria.feature_codes.nil?
         for feature_code in search_criteria.feature_codes
           url << "&featureCode=#{CGI::escape( feature_code )}"
         end
       end
 
-      if !search_criteria.country_bias.nil?
-        url << "&countryBias=#{CGI::escape( search_criteria.country_bias )}"
-      end
-	  
-	  if search_criteria.name_required?
-		url << "&isNameRequired=true"
-	  end
-
-      if !search_criteria.max_rows.nil?
-        url << "&maxRows=#{CGI::escape( search_criteria.max_rows )}"
-      end
-
-      if !search_criteria.start_row.nil?
-        url << "&startRow=#{CGI::escape( search_criteria.start_row )}"
-      end
-
-      if !search_criteria.style.nil?
-        url << "&style=#{CGI::escape( search_criteria.style )}"
-      end
+      url << "&countryBias=#{CGI::escape( search_criteria.country_bias )}" unless search_criteria.country_bias.nil?
+      url << "&isNameRequired=true" if search_criteria.name_required?
+      url << "&maxRows=#{CGI::escape( search_criteria.max_rows )}" unless search_criteria.max_rows.nil?
+      url << "&startRow=#{CGI::escape( search_criteria.start_row )}" unless search_criteria.start_row.nil?
+      url << "&style=#{CGI::escape( search_criteria.style )}" unless search_criteria.style.nil?
       
       res = make_request(url)
-
       doc = REXML::Document.new res.body
-
       toponym_sr.total_results_count = doc.elements["geonames/totalResultsCount"].text
-
       doc.elements.each("geonames/geoname") do |element|
-
         toponym_sr.toponyms << WebService::element_to_toponym( element )
-
       end
 
       return toponym_sr
     end
-    
   end
 end
 
