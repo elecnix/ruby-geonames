@@ -20,16 +20,16 @@ require 'cgi'
 require 'net/http'
 require 'rexml/document'
 
-require 'web_service'
-require 'toponym'
-require 'toponym_search_result'
-require 'toponym_search_criteria'
-require 'postal_code'
-require 'postal_code_search_criteria'
-require 'timezone'
-require 'country_subdivision'
-require 'wikipedia_article'
-require 'intersection'
+require_relative 'web_service'
+require_relative 'toponym'
+require_relative 'toponym_search_result'
+require_relative 'toponym_search_criteria'
+require_relative 'postal_code'
+require_relative 'postal_code_search_criteria'
+require_relative 'timezone'
+require_relative 'country_subdivision'
+require_relative 'wikipedia_article'
+require_relative 'intersection'
 
 module Geonames
   autoload :Config,  'geonames/config'
@@ -40,10 +40,14 @@ module Geonames
   class << self
 
     def config
-      Thread.current[:geonames_config] ||= Geonames::Config.new
+        $config ||= Geonames::Config.new
     end
 
-    %w(lang username base_url).each do |method|
+    #def config
+    #  Thread.current[:geonames_config] ||= Geonames::Config.new
+    #end
+
+    %w(lang username base_url password).each do |method|
       module_eval <<-DELEGATORS, __FILE__, __LINE__ + 1
         def #{method}
           config.#{method}
