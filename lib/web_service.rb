@@ -38,7 +38,7 @@ module Geonames
     end
 
     def WebService.element_to_postal_code ( element )
-      postal_code = PostalCode.new
+      postal_code = Geonames::PostalCode.new
 
       postal_code.admin_code_1    = WebService::get_element_child_text( element, 'adminCode1' )
       postal_code.admin_code_2    = WebService::get_element_child_text( element, 'adminCode2' )
@@ -56,7 +56,7 @@ module Geonames
     end
 
     def WebService.element_to_wikipedia_article ( element )
-      article = WikipediaArticle.new
+      article = Geonames::WikipediaArticle.new
 
       article.language              = WebService::get_element_child_text( element, 'lang' )
       article.title                 = WebService::get_element_child_text( element, 'title' )
@@ -75,7 +75,7 @@ module Geonames
     end
 
     def WebService.element_to_toponym ( element )
-      toponym = Toponym.new
+      toponym = Geonames::Toponym.new
 
       toponym.name                = WebService::get_element_child_text( element, 'name' )
       toponym.alternate_names     = WebService::get_element_child_text( element, 'alternateNames' )
@@ -101,7 +101,7 @@ module Geonames
     end
 
     def WebService.element_to_intersection ( element )
-      intersection = Intersection.new
+      intersection = Geonames::Intersection.new
 
       intersection.street_1        = WebService::get_element_child_text( element, 'street1' )
       intersection.street_2        = WebService::get_element_child_text( element, 'street2' )
@@ -148,7 +148,7 @@ module Geonames
     end
 
     def WebService.postal_code_search( postal_code, place_name, country_code,*args )
-      postal_code_sc = PostalCodeSearchCriteria.new
+      postal_code_sc = Geonames::PostalCodeSearchCriteria.new
       postal_code_sc.postal_code = postal_code
       postal_code_sc.place_name = place_name
       postal_code_sc.country_code = country_code
@@ -253,6 +253,7 @@ module Geonames
     def WebService.make_request(path_and_query, *args)
       url = Geonames.base_url + path_and_query
       url += "&username=#{Geonames.username}" if Geonames.username
+      url += "&password=#{Geonames.password}" if Geonames.password
       url += "&lang=#{Geonames.lang}"
       options = {
         :open_timeout => 60,

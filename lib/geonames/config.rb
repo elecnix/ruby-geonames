@@ -19,6 +19,8 @@
 module Geonames
   class Config
 
+    attr_reader :password
+
     @@default_username  = nil
     @@default_base_url  = "http://ws.geonames.org"
     @@default_lang      = "en"
@@ -29,6 +31,10 @@ module Geonames
 
     def username=(username)
       @username = username
+    end
+
+    def password=(password)
+      @password = password
     end
 
     def base_url
