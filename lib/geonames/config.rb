@@ -24,6 +24,15 @@ module Geonames
     @@default_username  = nil
     @@default_base_url  = "http://ws.geonames.org"
     @@default_lang      = "en"
+    @@default_radius    = 0.5
+
+    def radius
+      @radius || @@default_radius
+    end
+
+    def radius=(radius)
+      @radius = radius
+    end
 
     def username
       @username || @@default_username

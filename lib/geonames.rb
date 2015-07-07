@@ -43,11 +43,7 @@ module Geonames
         $config ||= Geonames::Config.new
     end
 
-    #def config
-    #  Thread.current[:geonames_config] ||= Geonames::Config.new
-    #end
-
-    %w(lang username base_url password).each do |method|
+    %w(lang username base_url password radius).each do |method|
       module_eval <<-DELEGATORS, __FILE__, __LINE__ + 1
         def #{method}
           config.#{method}
