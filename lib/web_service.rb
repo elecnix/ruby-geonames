@@ -254,6 +254,7 @@ module Geonames
       url = Geonames.base_url + path_and_query
       url += "&username=#{Geonames.username}" if Geonames.username
       url += "&password=#{Geonames.password}" if Geonames.password
+      url += "&radius=#{Geonames.radius}"
       url += "&lang=#{Geonames.lang}"
       options = {
         :open_timeout => 60,
