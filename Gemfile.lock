@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-geonames (0.2.8)
+    ruby-geonames (0.2.9)
 
 GEM
   remote: http://rubygems.org/
