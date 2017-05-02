@@ -37,6 +37,16 @@ module Geonames
       end
     end
 
+    def WebService.element_to_bbox( element, child )
+      element = element.elements[child]
+      north = WebService::get_element_child_float( element, 'north' )
+      south = WebService::get_element_child_float( element, 'south' )
+      east = WebService::get_element_child_float( element, 'east' )
+      west = WebService::get_element_child_float( element, 'west' )
+
+      bbox = Geonames::BoundingBox.new north, south, east, west
+    end
+
     def WebService.element_to_postal_code ( element )
       postal_code = Geonames::PostalCode.new
 
@@ -95,6 +105,7 @@ module Geonames
       toponym.admin_code_2        = WebService::get_element_child_text( element, 'adminCode2' )
       toponym.admin_name_1        = WebService::get_element_child_text( element, 'adminName1' )
       toponym.admin_name_2        = WebService::get_element_child_text( element, 'adminName2' )
+      toponym.bbox                = WebService::element_to_bbox( element, 'bbox' )
 
       return toponym
 

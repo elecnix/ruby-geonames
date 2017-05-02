@@ -37,12 +37,14 @@ module Geonames
         attr :admin_code_2
         attr :admin_name_1
         attr :admin_name_2
+        attr :bbox
 
         attr_writer :geoname_id, :name, :alternate_names, :country_code
         attr_writer :country_name, :population, :elevation, :feature_class
         attr_writer :feature_class_name, :feature_code,:feature_code_name
         attr_writer :latitude, :longitude, :distance
         attr_writer :admin_code_1, :admin_code_2, :admin_name_1, :admin_name_2
+        attr_writer :bbox
     
     end
 end

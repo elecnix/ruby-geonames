@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name = "ruby-geonames"
+  s.name = "geonames"
   s.version = "0.2.9"
   s.authors = [ "Adam Wisniewski", "Rahul Ghose" ]
   s.email = "adamw@tbcn.ca"
