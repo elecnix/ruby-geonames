@@ -30,6 +30,7 @@ require_relative 'timezone'
 require_relative 'country_subdivision'
 require_relative 'wikipedia_article'
 require_relative 'intersection'
+require_relative 'bounding_box'
 
 module Geonames
   autoload :Config,  'geonames/config'
